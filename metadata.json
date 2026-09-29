@@ -1,0 +1,6 @@
+{
+  "name": "Nexus Bank - Sistema Bancário",
+  "description": "Sistema bancário moderno com depósitos, saques com validação rigorosa de saldo, extratos em tempo real e integração completa com Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
