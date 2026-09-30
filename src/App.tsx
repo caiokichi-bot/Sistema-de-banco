@@ -10,15 +10,7 @@ import { TransactionHistory } from './components/TransactionHistory.tsx';
 import { ReceiptModal } from './components/ReceiptModal.tsx';
 import { NewAccountModal } from './components/NewAccountModal.tsx';
 import { SupabaseModal } from './components/SupabaseModal.tsx';
-import {
-  Database,
-  ArrowDownRight,
-  ArrowUpRight,
-  ShieldCheck,
-  CheckCircle2,
-  Sparkles,
-  RefreshCw,
-} from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 export default function App() {
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
@@ -34,9 +26,6 @@ export default function App() {
   const [activeReceipt, setActiveReceipt] = useState<BankTransaction | null>(null);
   const [isNewAccountOpen, setIsNewAccountOpen] = useState<boolean>(false);
   const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState<boolean>(false);
-
-  // Banner dismiss
-  const [bannerDismissed, setBannerDismissed] = useState<boolean>(false);
 
   // Fetch accounts and check database connection
   const loadData = useCallback(async (preferredAccountId?: string) => {
@@ -131,51 +120,9 @@ export default function App() {
         selectedAccount={selectedAccount}
         onSelectAccount={handleSelectAccount}
         onOpenNewAccount={() => setIsNewAccountOpen(true)}
-        onOpenSupabase={() => setIsSupabaseModalOpen(true)}
-        isSupabaseConnected={isSupabaseConnected}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-
-      {/* Database Connection Notice Banner */}
-      {!bannerDismissed && (
-        <div className="bg-slate-900 border-b border-slate-800 px-4 py-2.5">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div className="flex items-center gap-2">
-              {isSupabaseConnected ? (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span className="text-slate-300">
-                    <strong className="text-emerald-400 font-semibold">Supabase Conectado:</strong> Suas contas, depósitos, saques e saldos estão salvos e sincronizados diretamente no banco de dados na nuvem.
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Database className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span className="text-slate-300">
-                    <strong className="text-amber-400 font-semibold">Modo Local (Pronto para Supabase):</strong> O sistema bancário está 100% funcional. Conecte sua URL e Chave Anon do Supabase para persistência online imediata.
-                  </span>
-                </>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3 shrink-0">
-              <button
-                onClick={() => setIsSupabaseModalOpen(true)}
-                className="text-emerald-400 hover:text-emerald-300 font-medium underline underline-offset-2"
-              >
-                {isSupabaseConnected ? 'Ver Esquema SQL' : 'Conectar ao Supabase'}
-              </button>
-              <button
-                onClick={() => setBannerDismissed(true)}
-                className="text-slate-500 hover:text-slate-400 text-xs"
-              >
-                Dispensar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Viewport */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 space-y-8">
@@ -289,7 +236,13 @@ export default function App() {
           <div className="flex items-center gap-4 text-slate-500">
             <span>Validação Estrita de Saldo</span>
             <span aria-hidden="true">·</span>
-            <span>Pronto para Supabase PostgreSQL</span>
+            <button
+              onClick={() => setIsSupabaseModalOpen(true)}
+              className="text-slate-500 hover:text-slate-300 transition-colors"
+              title="Configurações do Banco de Dados"
+            >
+              Integração Supabase
+            </button>
           </div>
         </div>
       </footer>
